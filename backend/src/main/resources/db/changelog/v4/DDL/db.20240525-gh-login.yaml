@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: grotor
+      changes:
+        - addColumn:
+            tableName: account
+            columns:
+              - column:
+                  name: gh_login
+                  type: varchar(100)
+        - addNotNullConstraint:
+            tableName: account
+            columnName: gh_login
+            defaultNullValue: ''

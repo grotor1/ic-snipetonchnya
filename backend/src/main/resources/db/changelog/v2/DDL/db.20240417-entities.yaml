@@ -1,0 +1,267 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: grotor
+      changes:
+        - createTable:
+            tableName: tech
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: label
+                  type: varchar(30)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: grotor
+      changes:
+        - createTable:
+            tableName: tag
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: label
+                  type: varchar(30)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 3
+      author: grotor
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: false
+              - column:
+                  name: content
+                  type: varchar
+                  constraints:
+                    nullable: false
+                    unique: false
+              - column:
+                  name: author
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_post_account_id
+                    references: account(id)
+              - column:
+                  name: language
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 4
+      author: grotor
+      changes:
+        - createTable:
+            tableName: post_tech
+            columns:
+              - column:
+                  name: post_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_post_tech_post_id
+                    references: post(id)
+                    nullable: false
+              - column:
+                  name: tech_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_post_tech_tech_id
+                    references: tech(id)
+                    nullable: false
+        - addPrimaryKey:
+            tableName: post_tech
+            columnNames: 'post_id,tech_id'
+            constraintName: 'pk_post_tech'
+
+
+  - changeSet:
+      id: 5
+      author: grotor
+      changes:
+        - createTable:
+            tableName: post_tag
+            columns:
+              - column:
+                  name: post_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_post_tag_post_id
+                    references: post(id)
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_post_tag_tag_id
+                    references: tag(id)
+                    nullable: false
+        - addPrimaryKey:
+            tableName: post_tag
+            columnNames: 'post_id,tag_id'
+            constraintName: 'pk_post_tag'
+
+  - changeSet:
+      id: 6
+      author: grotor
+      changes:
+        - createTable:
+            tableName: comment
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: author
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_comment_account_id
+                    references: account(id)
+              - column:
+                  name: content
+                  type: varchar(3000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_comment_post_id
+                    references: post(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 7
+      author: grotor
+      changes:
+        - createTable:
+            tableName: search
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: author
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_search_account_id
+                    references: account(id)
+              - column:
+                  name: title_entry
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 8
+      author: grotor
+      changes:
+        - createTable:
+            tableName: search_tag
+            columns:
+              - column:
+                  name: search_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_search_tag_search_id
+                    references: search(id)
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_search_tag_tag_id
+                    references: tag(id)
+                    nullable: false
+        - addPrimaryKey:
+            tableName: search_tag
+            columnNames: 'search_id,tag_id'
+            constraintName: 'pk_search_tag'
+
+  - changeSet:
+      id: 9
+      author: grotor
+      changes:
+        - createTable:
+            tableName: search_tech
+            columns:
+              - column:
+                  name: search_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_search_tech_search_id
+                    references: search(id)
+                    nullable: false
+              - column:
+                  name: tech_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_search_tech_tech_id
+                    references: tech(id)
+                    nullable: false
+        - addPrimaryKey:
+            tableName: search_tech
+            columnNames: 'search_id,tech_id'
+            constraintName: 'pk_search_tech'

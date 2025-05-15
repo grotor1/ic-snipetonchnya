@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 'DDL/db.20240525-gh-login.yaml'
+      relativeToChangelogFile: true

@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 'DDL/db.20240510-search-name.yaml'
+      relativeToChangelogFile: true

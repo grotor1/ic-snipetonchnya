@@ -1,0 +1,123 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: grotor
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: key
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: label
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: grotor
+      changes:
+        - sql:
+            sql: |
+              insert into role values (gen_random_uuid(), 'USER', 'Пользователь');
+              insert into role values (gen_random_uuid(), 'ADMIN', 'Администратор');
+
+  - changeSet:
+      id: 3
+      author: grotor
+      changes:
+        - createTable:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: login
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: full_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_account_role_id
+                    references: role(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: is_blocked
+                  type: boolean
+                  defaultOnNull: false
+                  constraints:
+                    nullable: false
+        - sql:
+            sql: |
+              insert into account values (gen_random_uuid(), 'admin', '', '', '', (select id from role where key = 'ADMIN'), now(), false);
+
+  - changeSet:
+      id: 4
+      author: grotor
+      changes:
+        - createTable:
+            tableName: refresh_token
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiry_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_refresh_token_account_id
+                    references: account(id)
+                    nullable: false

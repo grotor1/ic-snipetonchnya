@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 'DDL/db.20240411-auth-user.yaml'
+      relativeToChangelogFile: true

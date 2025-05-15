@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: 'DDL/db.20240417-entities.yaml'
+      relativeToChangelogFile: true
+  - include:
+      file: 'DML/default_entities.sql'
+      relativeToChangelogFile: true
