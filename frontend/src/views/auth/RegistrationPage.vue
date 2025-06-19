@@ -1,6 +1,6 @@
 <template>
   <base-page>
-    <div class="p-6 flex flex-col items-center">
+    <div class="p-6 flex flex-col items-center grow justify-center">
       <card-block class="flex flex-col items-center gap-8 p-6 w-[400px]">
         <span class="text-3xl">
           Регистрация

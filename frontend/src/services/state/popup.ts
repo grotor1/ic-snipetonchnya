@@ -8,7 +8,7 @@ export const popupStateSetup = () => {
 
     setTimeout(() => {
       popupQueue.value.shift();
-    }, 3000);
+    }, 30000);
   }
 
   const getPopups = computed(() => popupQueue.value)

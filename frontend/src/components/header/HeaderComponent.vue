@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex justify-between items-center p-4 border-b border-stone-700">
+  <div class="w-full flex justify-between items-center p-4 border-b border-stone-700 bg-stone-900">
     <router-link to="/">
       <span class="text-2xl hover:underline">
         Снипетошная
@@ -22,9 +22,12 @@
       </template>
 
       <template v-else>
-        <router-link to="/auth/account/me">
+        <router-link to="/auth/account/me" id="account-link">
           <span class="hover:underline">
-            Аккаунт
+            Аккаунт -
+            <span id="account-login">
+              {{ getUserInfo?.login }}
+            </span>
           </span>
         </router-link>
 
@@ -46,11 +49,11 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const { isLoggedIn, logout } = userState;
+const { isLoggedIn, logout, getUserInfo } = userState;
 
 const redirectLogout = async () => {
-  await router.push('/');
   await logout();
+  router.push('/');
 }
 </script>
 

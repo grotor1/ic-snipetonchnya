@@ -1,12 +1,12 @@
 <template>
   <base-page>
-    <div class="p-6 flex flex-col items-center">
+    <div class="p-6 flex flex-col items-center grow justify-center">
       <card-block class="flex flex-col items-center gap-8 p-6 min-w-[400px]">
         <span class="text-3xl">
-          Регистрация
+          Вход
         </span>
 
-        <form class="w-full flex flex-col gap-4" @submit="submitHandler">
+        <form class="w-full flex flex-col gap-4 text-center" @submit="submitHandler">
           <label-component label="Логин">
             <text-input-component id="login-input" v-model="credentials.login"
                                   placeholder="Логин" />
@@ -16,6 +16,10 @@
             <password-input-component id="password-input" v-model="credentials.password"
                                       placeholder="Пароль" />
           </label-component>
+
+          <router-link to="/auth/registration">
+            Регистрация
+          </router-link>
 
           <button-component id="login-button">
             Войти
@@ -59,8 +63,10 @@ const submitHandler = async (event: Event) => {
   event.preventDefault();
 
   if (Object.values(credentials.value).every((value: string) => value)) {
-    await userState.login(credentials.value);
-    await router.push('/');
+    try {
+      await userState.login(credentials.value);
+      await router.push('/');
+    } catch (e) {}
   } else {
     popupState.newPopup('Все поля обязательны');
   }

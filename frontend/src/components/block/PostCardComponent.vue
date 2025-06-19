@@ -1,7 +1,7 @@
 <template>
-  <card-block-component class="p-6 flex flex-col gap-4 post-card" :id="`${post.id}`">
+  <card-block-component class="p-6 flex flex-col gap-4 post-card" :id="`${post.title}`">
     <div class="flex justify-between items-center">
-      <router-link :to="`/post/${post.id}`" class="hover:underline">
+      <router-link :to="`/post/${post.id}`" id="post-card-retrieve-link" class="hover:underline">
         <span class="text-2xl">
           {{ post.title }}
         </span>

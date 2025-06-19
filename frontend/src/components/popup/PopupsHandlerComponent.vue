@@ -1,6 +1,7 @@
 <template>
   <div class="absolute top-2 right-1/2 translate-x-1/2 flex flex-col gap-2">
     <popup-component v-for="(item, index) in popupState.getPopups.value"
+                     :id="item.replace(/ /g, '-').toLocaleLowerCase()"
                      :key="index"
                      :message="item"/>
   </div>

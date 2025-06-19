@@ -27,10 +27,12 @@ const userStateSetup = () => {
   const refreshTimer = ref<number>();
 
   const login = async (userCredentials: IUserCredentials) => {
-    tokenCouple.value = await useRequest().post('/auth/login', userCredentials);
-    localStorage.setItem(REFRESH_TOKEN_KEY, getRefreshToken.value);
-    await loadUserInfo();
-    await refresh(getRefreshToken.value, true);
+    try {
+      tokenCouple.value = await useRequest().post('/auth/login', userCredentials);
+      localStorage.setItem(REFRESH_TOKEN_KEY, getRefreshToken.value);
+      await loadUserInfo();
+      await refresh(getRefreshToken.value, true);
+    } catch (e) {}
   }
 
   const register = async (userInfo: IUserCreate) => {
@@ -67,10 +69,11 @@ const userStateSetup = () => {
   }
 
   const logout = async () => {
+    userInfo.value = undefined;
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
     clearTimeout(refreshTimer.value);
     refreshTimer.value = undefined;
     tokenCouple.value = undefined;
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
   }
 
   return {

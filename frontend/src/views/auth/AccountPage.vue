@@ -2,9 +2,16 @@
   <base-client-page>
     <div class="flex flex-col p-6 gap-4 h-full overflow-y-auto">
       <card-block-component class="p-6 flex flex-col w-full">
-        <span class="text-2xl">
-           {{ getUserInfo?.login }} {{ getUserInfo?.fullName && '- ' + getUserInfo.fullName }}
-        </span>
+        <div class="flex justify-between items-center">
+          <span class="text-2xl">
+            {{ getUserInfo?.login }} {{ getUserInfo?.fullName && '- ' + getUserInfo.fullName }}
+          </span>
+
+          <span id="logout-button" @click="redirectLogout" class="hover:underline">
+            Выход
+          </span>
+        </div>
+
 
         <span>
            Email: {{ getUserInfo?.email }}
@@ -37,6 +44,7 @@ import type {IUser} from '@/api/user/types';
 import useRequest from '@/api/hooks/useRequest';
 import BaseClientPage from '@/views/client/BaseClientPage.vue';
 import PostListComponent from "@/components/list/PostListComponent.vue";
+import { useRouter } from 'vue-router';
 
 const userInfo = ref<IUser>();
 
@@ -44,6 +52,9 @@ const userGh = ref();
 
 const route = useRoute();
 const {getUserInfo: getMeUserInfo} = userState;
+const { logout } = userState;
+const router = useRouter();
+
 
 const getIsExternal = computed(() => route.params.id !== 'me');
 
@@ -66,6 +77,11 @@ const loadUserInfo = async () => {
 };
 
 loadUserInfo();
+
+const redirectLogout = async () => {
+  await logout();
+  router.push('/');
+}
 </script>
 
 <style>
